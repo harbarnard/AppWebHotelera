@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+			
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:f="http://java.sun.com/jsf/core">
+	
+	<ui:composition template="/templates/layout.xhtml">
+		<ui:define name="head">
+			<title>#{msg['distrito.mantenimiento.titulo']}</title>
+		</ui:define>
+		<ui:define name="menu">
+			<ui:include src="/templates/menu.xhtml"/>
+		</ui:define>
+		<ui:define name="content">
+			<fieldset>
+				<legend><span>#{msg['distrito.mantenimiento.registro']}</span></legend>
+				<h:form id="frmMantenimientoDistrito">
+					<h:inputHidden id="txtCodigo" value="${beanDistrito.codigoDistrito}"/>
+					<h:panelGrid columns="2">						
+						<h:outputText value="#{msg['pais.nombre']}"/>
+						<p:selectOneMenu id="cboPais" value="${beanDistrito.codigoPais}" required="#{beanDistrito.codigoPais != null}" requiredMessage="#{msg['pais.nombre.incorrecto.seleccionar']}">
+							<p:ajax update=":frmMantenimientoDistrito:cboProvincia" listener="${beanDistrito.cargarProvincia}"/>
+							<f:selectItem itemValue="#{null}" itemLabel="#{msg['seleccionar.vacio']}"/>
+							<f:selectItems value="${beanDistrito.listadoPais}" var="pais" itemLabel="${pais.nombre}" itemValue="${pais.codigoPais}"/>
+						</p:selectOneMenu>
+						<h:outputText value="#{msg['provincia.nombre']}"/>
+						<p:selectOneMenu id="cboProvincia" value="${beanDistrito.codigoProvincia}" required="#{beanDistrito.codigoProvincia != null}" requiredMessage="#{msg['provincia.nombre.incorrecto.seleccionar']}">
+							<f:selectItem itemValue="#{null}" itemLabel="#{msg['seleccionar.vacio']}"/>
+							<f:selectItems value="${beanDistrito.listadoProvincia}" var="provincia" itemLabel="${provincia.nombreProvincia}" itemValue="${provincia.codigoProvincia}"/>
+						</p:selectOneMenu>
+						<h:outputText value="#{msg['distrito.nombre']}"/>
+						<p:inputText id="txtNombreDistrito" value="${beanDistrito.nombreDistrito}" required="true" requiredMessage="${msg['distrito.nombre.incorrecto']}"/>
+						<h:outputText value="#{msg['estado']}"/>
+						<p:selectOneMenu id="cboEstado" value="${beanDistrito.estado}" required="#{beanDistrito.estado != null}" requiredMessage="#{msg['estado.incorrecto']}">
+							<f:selectItem itemValue="#{null}" itemLabel="#{msg['seleccionar.vacio']}"/>
+							<f:selectItems value="${beanGeneral.getListado('PNL_GENERAL', 'ESTADO')}" var="estado" itemLabel="${estado.descripcion}" itemValue="${estado.codigo}"/>
+						</p:selectOneMenu>
+						<p:commandButton value="#{msg['grabar']}" id="btnGrabar" action="${beanDistrito.grabarRegistro}" update="msgBox"/>
+						<p:button value="#{msg['cancelar']}" id="btnCancelar" href="lstDistrito.xhtml"/>
+					</h:panelGrid>
+					<p:growl id="msgBox" showDetail="true" showSummary="true" sticky="false"/>
+				</h:form>
+			</fieldset>
+		</ui:define>
+	</ui:composition>
+</html>

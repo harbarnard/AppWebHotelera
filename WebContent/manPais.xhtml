@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+			
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:f="http://java.sun.com/jsf/core">
+	
+	<ui:composition template="/templates/layout.xhtml">
+		<ui:define name="head">
+			<title>#{msg['pais.mantenimiento.titulo']}</title>
+		</ui:define>
+		<ui:define name="menu">
+			<ui:include src="/templates/menu.xhtml"/>
+		</ui:define>
+		<ui:define name="content">
+			<fieldset>
+				<legend><span>#{msg['pais.mantenimiento.registro']}</span></legend>
+				<h:form id="frmMantenimientoPais">
+					<h:inputHidden id="txtCodigo" value="${beanPais.codigoPais}"/>					
+					<h:panelGrid columns="2">						
+						<h:outputText value="#{msg['pais.nombre']}"/>
+						<p:inputText id="txtNombre" value="${beanPais.nombrePais}" required="true" requiredMessage="#{msg['pais.nombre.incorrecto']}"/>
+						<h:outputText value="#{msg['estado']}"/>					
+						<p:selectOneMenu id="cboEstado" value="${beanPais.estado}" required="#{beanPais.estado != null}" requiredMessage="#{msg['estado.incorrecto']}">
+							<f:selectItem itemValue="#{null}" itemLabel="#{msg['seleccionar.vacio']}"/>
+							<f:selectItems value="${beanGeneral.getListado('PNL_GENERAL', 'ESTADO')}" var="estado" itemLabel="${estado.descripcion}" itemValue="${estado.codigo}"/>
+						</p:selectOneMenu>
+						<p:commandButton value="#{msg['grabar']}" id="btnGrabar" action="${beanPais.grabarRegistro}" update="msgBox"/>
+						<p:button value="#{msg['cancelar']}" id="btnCancelar" href="lstPais.xhtml"/>					
+					</h:panelGrid>
+					<p:growl id="msgBox" showDetail="true" showSummary="true" sticky="false"/>
+				</h:form>
+			</fieldset>
+		</ui:define>
+	</ui:composition>
+</html>

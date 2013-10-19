@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+			
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:f="http://java.sun.com/jsf/core">
+	
+	<ui:composition template="/templates/layout.xhtml">
+		<ui:define name="head">
+			<title>#{msg['cliente.listado.titulo']}</title>
+		</ui:define>
+		<ui:define name="menu">
+			<ui:include src="/templates/menu.xhtml"/>
+		</ui:define>
+		<ui:define name="content">
+			<fieldset>
+				<legend><span>#{msg['cliente.listado.busqueda']}</span></legend>
+				<h:form id="frmBuscarCliente">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{msg['cliente.nombre']}"/>
+						<p:inputText id="txtNombre" value="#{beanCliente.nombre}"/>
+						<h:outputText value="#{msg['cliente.documento']}"/>
+						<p:inputText id="txtDocumento" value="#{beanCliente.documento}"/>
+						<h:outputText value="#{msg['estado']}"/>
+						<p:selectOneMenu id="cboEstado" value="#{beanCliente.estado}">
+							<f:selectItem itemValue="0" itemLabel="#{msg['seleccionar.vacio']}"/>
+							<f:selectItems value="${beanGeneral.getListado('PNL_GENERAL', 'ESTADO')}" var="estado" itemLabel="${estado.descripcion}" itemValue="${estado.codigo}"/>
+						</p:selectOneMenu>
+						<p:commandButton value="#{msg['buscar']}" id="btnBuscar" action="#{beanCliente.buscar}" update=":frmBuscarCliente:lstCliente"/>
+						<p:button value="#{msg['nuevo']}" id="btnNuevo" href="manCliente.xhtml"/>
+					</h:panelGrid>
+					<br/>
+					<div align="center">
+						<p:dataTable emptyMessage="#{msg['listado.vacio']}" value="${beanCliente.listado}" var="cliente" style="width: 50%;" id="lstCliente" rowIndexVar="index">
+							<p:column headerText="#{msg['nro']}">
+								<h:outputText value="${index+1}"/>
+							</p:column>
+							<p:column headerText="#{msg['codigo']}">
+								<h:outputText value="${cliente.codigoCliente}"/>
+							</p:column>
+							<p:column headerText="#{msg['cliente.nombre']}">
+								<h:outputText value="${cliente.nombre}"/>
+							</p:column>
+							<p:column headerText="#{msg['cliente.tipodocumento']}">
+								<h:outputText value="${cliente.descripcionTipoDocumento}"/>
+							</p:column>
+							<p:column headerText="#{msg['cliente.documento']}">
+								<h:outputText value="${cliente.documento}"/>
+							</p:column>
+							<p:column headerText="#{msg['estado']}">
+								<h:outputText value="${cliente.descripcionEstado}"/>
+							</p:column>
+						</p:dataTable>
+					</div>					
+				</h:form>
+			</fieldset>					
+		</ui:define>
+	</ui:composition>
+</html>

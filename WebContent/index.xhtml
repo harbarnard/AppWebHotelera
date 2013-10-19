@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">			
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui">
+	
+	<ui:composition template="/templates/layout.xhtml">
+		<ui:define name="head">
+			<title>#{msg['titulo']}</title>
+		</ui:define>
+		<ui:define name="header">
+			<h:form id="frmLogin">
+				<h:panelGrid columns="5">
+					<h:outputText value="#{msg['login.usuario']}"/>
+					<p:inputText id="txtUsuario" style="width: 100px;" value="#{beanLogin.usuario}" required="true" requiredMessage="#{msg['login.usuario.incorrecto']}" />
+					<h:outputText value="#{msg['login.contrasena']}"/>
+					<p:password id="txtContrasena" style="width: 100px;" value="#{beanLogin.contrasena}" required="true" requiredMessage="#{msg['login.contrasena.incorrecto']}"/>
+					<p:commandButton id="btnIniciarSesion" value="#{msg['login.boton']}" action="#{beanLogin.login}" update="msgBox"/>
+				</h:panelGrid>
+				<p:growl id="msgBox" showDetail="true" showSummary="true" sticky="false"/>
+			</h:form>
+		</ui:define>
+		<ui:define name="content"/>
+	</ui:composition>
+</html>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+			
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:f="http://java.sun.com/jsf/core">
+	
+	<ui:composition template="/templates/layout.xhtml">
+		<ui:define name="head">
+			<title>#{msg['habitacion.listado.titulo']}</title>
+		</ui:define>
+		<ui:define name="menu">
+			<ui:include src="/templates/menu.xhtml"/>
+		</ui:define>
+		<ui:define name="content">
+			<fieldset>
+				<legend><span>#{msg['habitacion.listado.busqueda']}</span></legend>
+				<h:form id="frmBuscarHabitacion">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{msg['habitacion.tipo']}"/>
+						<p:selectOneMenu value="${beanHabitacion.tipoHabitacion}">
+							<f:selectItem itemValue="0" itemLabel="#{msg['seleccionar.vacio']}"/>
+							<f:selectItems value="#{beanGeneral.getListado('PNL_HABITACION', 'TIPO_HABITACION')}" var="tipo" itemLabel="${tipo.descripcion}" itemValue="${tipo.codigo}"/>
+						</p:selectOneMenu>
+						<h:outputText value="#{msg['habitacion.numhabitacion']}"/>
+						<p:inputText id="txtNumHabitacion" value="${beanHabitacion.numHabitacion}"/>
+						<h:outputText value="#{msg['estado']}"/>
+						<p:selectOneMenu id="cboEstado" value="#{beanHabitacion.estado}">
+							<f:selectItem itemValue="0" itemLabel="#{msg['seleccionar.vacio']}"/>
+							<f:selectItems value="${beanGeneral.getListado('PNL_GENERAL', 'ESTADO')}" var="estado" itemLabel="${estado.descripcion}" itemValue="${estado.codigo}"/>
+						</p:selectOneMenu>
+						<p:commandButton value="#{msg['buscar']}" id="btnBuscar" action="${beanHabitacion.buscar}" update=":frmBuscarHabitacion:lstHabitacion"/>
+						<p:button value="#{msg['nuevo']}" id="btnNuevo" href="manHabitacion.xhtml"/>											
+					</h:panelGrid>
+					<br/>
+					<div align="center">
+						<p:dataTable emptyMessage="#{msg['listado.vacio']}" value="${beanHabitacion.listado}" var="habitacion" style="width: 50%;" id="lstHabitacion" rowIndexVar="index">
+							<p:column headerText="#{msg['nro']}">
+								<h:outputText value="${index+1}"/>
+							</p:column>
+							<p:column headerText="#{msg['codigo']}">
+								<h:outputText value="${habitacion.codigoHabitacion}"/>
+							</p:column>
+							<p:column headerText="#{msg['habitacion.tipo']}">
+								<h:outputText value="${habitacion.descripcionTipoHabitacion}"/>
+							</p:column>
+							<p:column headerText="#{msg['habitacion.numhabitacion']}">
+								<h:outputText value="${habitacion.numHabitacion}"/>
+							</p:column>
+							<p:column headerText="#{msg['estado']}">
+								<h:outputText value="${habitacion.descripcionEstado}"/>
+							</p:column>
+						</p:dataTable>
+					</div>
+				</h:form>				
+			</fieldset>						
+		</ui:define>
+	</ui:composition>
+</html>

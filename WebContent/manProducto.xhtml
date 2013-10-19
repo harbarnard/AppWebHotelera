@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+			
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:f="http://java.sun.com/jsf/core">
+	
+	<ui:composition template="/templates/layout.xhtml">
+		<ui:define name="head">
+			<title>#{msg['producto.mantenimiento.titulo']}</title>
+		</ui:define>
+		<ui:define name="menu">
+			<ui:include src="/templates/menu.xhtml"/>
+		</ui:define>
+		<ui:define name="content">
+			<fieldset>
+				<legend><span>#{msg['producto.mantenimiento.registro']}</span></legend>
+				<h:form id="frmMantenimientoProducto">
+					<h:inputHidden id="txtCodigo" value="${beanProducto.codigoProducto}"/>
+					<h:panelGrid columns="2">
+						<h:outputText value="#{msg['producto.tipo']}"/>						
+						<p:selectOneMenu id="cboTipoProducto" value="${beanProducto.codigoTipoProducto}" required="${beanProducto.codigoTipoProducto != null}" requiredMessage="${msg['producto.tipo.incorrecto']}">
+							<f:selectItem itemValue="#{null}" itemLabel="#{msg['seleccionar.vacio']}"/>
+							<f:selectItems value="${beanGeneral.getListado('PNL_PRODUCTO', 'TIPO_PRODUCTO')}" var="tipo" itemLabel="${tipo.descripcion}" itemValue="${tipo.codigo}"/>
+						</p:selectOneMenu>						
+						<h:outputText value="#{msg['producto.medida']}"/>						
+						<p:selectOneMenu id="cboMedida" value="${beanProducto.codigoMedida}">
+							<f:selectItem itemValue="0" itemLabel="#{msg['seleccionar.vacio']}"/>
+							<f:selectItems value="${beanGeneral.getListado('PNL_PRODUCTO', 'MEDIDA')}" var="medida" itemLabel="${medida.descripcion}" itemValue="${medida.codigo}"/>
+						</p:selectOneMenu>						
+						<h:outputText value="#{msg['producto.nombre']}"/>
+						<p:inputText id="txtNombre" value="${beanProducto.nombreProducto}" required="true" requiredMessage="${msg['producto.nombre.incorrecto']}"/>
+						<h:outputText value="#{msg['producto.stock']}"/>
+						<p:inputText id="txtStock" value="${beanProducto.stock}" required="true" requiredMessage="${msg['producto.stock.incorrecto']}"/>
+						<h:outputText value="#{msg['producto.peso']}"/>
+						<p:inputText id="txtPeso" value="${beanProducto.peso}" required="true" requiredMessage="${msg['producto.peso.incorrecto']}"/>
+						<h:outputText value="#{msg['producto.precioCompra']}"/>
+						<p:inputText id="txtPrecioCompra" value="${beanProducto.precioCompra}" required="true" requiredMessage="${msg['producto.precioCompra.incorrecto']}"/>
+						<h:outputText value="#{msg['producto.precioVenta']}"/>
+						<p:inputText id="txtPrecioVenta" value="${beanProducto.precioVenta}" required="true" requiredMessage="${msg['producto.precioVenta.incorrecto']}"/>
+						<h:outputText value="#{msg['estado']}"/>
+						<p:selectOneMenu id="cboEstado" value="${beanProducto.estado}" required="${beanProducto.estado != null}" requiredMessage="#{msg['estado.incorrecto']}">
+							<f:selectItem itemValue="#{null}" itemLabel="#{msg['seleccionar.vacio']}"/>
+							<f:selectItems value="${beanGeneral.getListado('PNL_GENERAL', 'ESTADO')}" var="estado" itemLabel="${estado.descripcion}" itemValue="${estado.codigo}"/>
+						</p:selectOneMenu>						
+						<p:commandButton value="#{msg['grabar']}" id="btnGrabar" action="${beanProducto.grabarRegistro}" update="msgBox"/>
+						<p:button value="#{msg['cancelar']}" id="btnCancelar" href="lstProducto.xhtml"/>
+					</h:panelGrid>
+					<p:growl id="msgBox" showDetail="true" showSummary="true" sticky="false"/>
+				</h:form>
+			</fieldset>
+		</ui:define>
+	</ui:composition>
+</html>

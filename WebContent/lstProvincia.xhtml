@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+			
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:f="http://java.sun.com/jsf/core">
+	
+	<ui:composition template="/templates/layout.xhtml">
+		<ui:define name="head">
+			<title>#{msg['provincia.listado.titulo']}</title>
+		</ui:define>
+		<ui:define name="menu">
+			<ui:include src="/templates/menu.xhtml"/>
+		</ui:define>
+		<ui:define name="content">
+			<fieldset>
+				<legend><span>#{msg['provincia.listado.busqueda']}</span></legend>
+				<h:form id="frmBuscarProvincia">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{msg['provincia.nombre']}"/>
+						<p:inputText id="txtProvincia" value="${beanProvincia.nombreProvincia}"/>
+						<h:outputText value="#{msg['pais.nombre']}"/>
+						<p:inputText id="txtPais" value="${beanProvincia.nombrePais}"/>
+						<h:outputText value="#{msg['estado']}"/>
+						<p:selectOneMenu id="cboEstado" value="#{beanProvincia.estado}">
+							<f:selectItem itemValue="0" itemLabel="#{msg['seleccionar.vacio']}"/>
+							<f:selectItems value="${beanGeneral.getListado('PNL_GENERAL', 'ESTADO')}" var="estado" itemLabel="${estado.descripcion}" itemValue="${estado.codigo}"/>
+						</p:selectOneMenu>
+						<p:commandButton value="#{msg['buscar']}" id="btnBuscar" action="${beanProvincia.buscar}" update=":frmBuscarProvincia:lstProvincia"/>
+						<p:button value="#{msg['nuevo']}" id="btnNuevo" href="manProvincia.xhtml"/>
+					</h:panelGrid>
+					<br/>
+					<div align="center">
+						<p:dataTable emptyMessage="#{msg['listado.vacio']}" value="${beanProvincia.listado}" var="provincia" style="width: 50%;" id="lstProvincia" rowIndexVar="index">
+							<p:column headerText="#{msg['nro']}">
+								<h:outputText value="${index+1}"/>
+							</p:column>
+							<p:column headerText="#{msg['codigo']}">
+								<h:outputText value="${provincia.codigoProvincia}"/>
+							</p:column>
+							<p:column headerText="#{msg['provincia.nombre']}">
+								<h:outputText value="${provincia.nombreProvincia}"/>
+							</p:column>
+							<p:column headerText="#{msg['pais.nombre']}">
+								<h:outputText value="${provincia.nombrePais}"/>
+							</p:column>
+							<p:column headerText="#{msg['estado']}">
+								<h:outputText value="${provincia.descripcionEstado}"/>
+							</p:column>
+						</p:dataTable>
+					</div>
+				</h:form>
+			</fieldset>
+		</ui:define>
+	</ui:composition>
+</html>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+			
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:f="http://java.sun.com/jsf/core">
+	
+	<ui:composition template="/templates/layout.xhtml">
+		<ui:define name="head">
+			<title>#{msg['producto.listado.titulo']}</title>
+		</ui:define>
+		<ui:define name="menu">
+			<ui:include src="/templates/menu.xhtml"/>
+		</ui:define>
+		<ui:define name="content">
+			<fieldset>
+				<legend><span>#{msg['producto.listado.busqueda']}</span></legend>
+				<h:form id="frmBuscarProducto">
+					<h:panelGrid columns="2">
+						<h:outputText value="#{msg['producto.tipo']}"/>
+						<p:selectOneMenu id="cboTipo" value="#{beanProducto.tipo}">
+							<f:selectItem itemValue="0" itemLabel="#{msg['seleccionar.vacio']}"/>
+							<f:selectItems value="${beanGeneral.getListado('PNL_PRODUCTO', 'TIPO_PRODUCTO')}" var="tipo" itemLabel="${tipo.descripcion}" itemValue="${tipo.codigo}"/>
+						</p:selectOneMenu>
+						<h:outputText value="#{msg['producto.nombre']}"/>											
+						<p:inputText id="txtProducto" value="${beanProducto.nombreProducto}"/>
+						<h:outputText value="#{msg['estado']}"/>
+						<p:selectOneMenu id="cboEstado" value="#{beanProducto.estado}">
+							<f:selectItem itemValue="0" itemLabel="#{msg['seleccionar.vacio']}"/>
+							<f:selectItems value="${beanGeneral.getListado('PNL_GENERAL', 'ESTADO')}" var="estado" itemLabel="${estado.descripcion}" itemValue="${estado.codigo}"/>
+						</p:selectOneMenu>					
+						<p:commandButton value="#{msg['buscar']}" id="btnBuscar" action="${beanProducto.buscar}" update=":frmBuscarProducto:lstProducto"/>
+						<p:button value="#{msg['nuevo']}" id="btnNuevo" href="manProducto.xhtml"/>
+					</h:panelGrid>
+					<br/>
+					<div align="center">
+						<p:dataTable emptyMessage="#{msg['listado.vacio']}" value="${beanProducto.listado}" var="producto" style="width: 50%;" id="lstProducto" rowIndexVar="index">
+							<p:column headerText="#{msg['nro']}">
+								<h:outputText value="${index+1}"/>
+							</p:column>
+							<p:column headerText="#{msg['codigo']}">
+								<h:outputText value="${producto.codigoProducto}"/>
+							</p:column>
+							<p:column headerText="#{msg['producto.tipo']}">
+								<h:outputText value="${producto.descripcionTipoProducto}"/>
+							</p:column>
+							<p:column headerText="#{msg['producto.nombre']}">
+								<h:outputText value="${producto.nombreProducto}"/>
+							</p:column>
+							<p:column headerText="#{msg['producto.stock']}">
+								<h:outputText value="${producto.stock}"/>
+							</p:column>
+							<p:column headerText="#{msg['producto.peso']}">
+								<h:outputText value="${producto.peso}"/>
+							</p:column>
+							<p:column headerText="#{msg['producto.precioCompra']}">
+								<h:outputText value="${producto.precioCompra}"/>
+							</p:column>
+							<p:column headerText="#{msg['producto.precioVenta']}">
+								<h:outputText value="${producto.precioVenta}"/>
+							</p:column>
+							<p:column headerText="#{msg['estado']}">
+								<h:outputText value="${producto.descripcionEstado}"/>
+							</p:column>
+						</p:dataTable>
+					</div>
+				</h:form>
+			</fieldset>
+		</ui:define>
+	</ui:composition>
+</html>
